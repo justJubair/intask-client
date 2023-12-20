@@ -40,7 +40,7 @@ const Navbar = () => {
     <div className="absolute navbar bg-transparent">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+          <div tabIndex={0} role="button" className="btn text-white btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -65,13 +65,13 @@ const Navbar = () => {
         </div>
         <Link
           to="/"
-          className="btn btn-ghost text-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
+          className="hidden md:block px-4 py-2 rounded-lg font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
         >
           inTask
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="flex space-x-4 font-medium px-1">{navLinks}</ul>
+        <ul className="flex space-x-4 font-medium px-1 text-white">{navLinks}</ul>
       </div>
       <div className="navbar-end">
         <Link
