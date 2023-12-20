@@ -37,7 +37,7 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="navbar bg-base-100">
+    <div className="absolute navbar bg-transparent">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -76,7 +76,7 @@ const Navbar = () => {
       <div className="navbar-end">
         <Link
           to="/login"
-          className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white"
+          className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
         >
           Login
         </Link>
