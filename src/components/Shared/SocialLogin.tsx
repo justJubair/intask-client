@@ -1,14 +1,31 @@
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const SocialLogin = () => {
-  const { googleSignIn } = useAuth();
+  const { googleSignIn, githubSignIn } = useAuth();
+  const navigate = useNavigate()
 
   const handleGoogleLogin = () => {
     googleSignIn()
       .then((result: { user: object }) => {
         if (result?.user) {
           toast.success("Logged in");
+          navigate("/dashboard")
+        }
+      })
+      .catch(
+        (error: { message: Renderable | ValueFunction<Renderable, Toast> }) => {
+          toast.error(error.message);
+        }
+      );
+  };
+  const handleGithubLogin = () => {
+    githubSignIn()
+      .then((result: { user: object }) => {
+        if (result?.user) {
+          toast.success("Logged in");
+          navigate("/dashboard")
         }
       })
       .catch(
@@ -23,7 +40,7 @@ const SocialLogin = () => {
         <h3 className="font-medium text-lg">Login with</h3>
         <FaGoogle size={20} />
       </button>
-      <button className="btn flex items-center">
+      <button onClick={handleGithubLogin} className="btn flex items-center">
         <h3 className="font-medium text-lg">Login with</h3>
         <FaGithub size={23} />
       </button>
