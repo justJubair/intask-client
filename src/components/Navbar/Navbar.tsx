@@ -1,6 +1,6 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Container from "../Shared/Container";
-
+import { Link } from 'react-scroll';
 const Navbar = () => {
   const navLinks = (
     <>
@@ -40,17 +40,16 @@ const Navbar = () => {
           Our Users
         </NavLink>
       </li>
-      <li className="duration-100 hover:border-b border-violet-600">
-        <NavLink
-          to="/about"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-3 py-1 rounded-md"
-              : "px-3 py-1"
-          }
+      <li className="duration-100 hover:border-b border-violet-600 cursor-pointer">
+        <Link
+        to="about"
+        spy={true} 
+        smooth={true} 
+        offset={50} 
+        duration={500} 
         >
           About
-        </NavLink>
+        </Link>
       </li>
     </>
   );
@@ -87,12 +86,12 @@ const Navbar = () => {
                 {navLinks}
               </ul>
             </div>
-            <Link
-              to="/"
+            <button
+              
               className="hidden md:block px-4 py-2 rounded-lg font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
             >
               inTask
-            </Link>
+            </button>
           </div>
           <div className="navbar-center hidden lg:flex">
             <ul className="flex space-x-4 font-medium px-1 text-white">
@@ -100,12 +99,12 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="navbar-end">
-            <Link
+            <NavLink
               to="/login"
               className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
             >
               Login
-            </Link>
+            </NavLink>
           </div>
         </div>
       </Container>
