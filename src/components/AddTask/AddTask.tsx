@@ -1,19 +1,35 @@
+
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import useAuth from "../../hooks/useAuth";
+
+interface TaskFormData {
+  // Define the properties of your task data
+  title: string;
+  deadline: string;
+  description: string;
+  priority: string;
+  userEmail: string;
+  // Add any other properties as needed
+}
+
 const AddTask = () => {
+  const {user} = useAuth()
   const {
     register,
     handleSubmit,
-   
-  } = useForm();
+    reset,
+  } = useForm<TaskFormData>();
 
-  const onSubmit = async(data: object) => {
+  const onSubmit = async(data: TaskFormData) => {
+    data.userEmail = user?.email
     
     try{
         const dbResponse = await axios.post("http://localhost:5000/tasks", data)
         if(dbResponse.data.insertedId){
           toast.success("Task has been added")
+          reset()
         }
     }
     catch(error: unknown){
