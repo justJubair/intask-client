@@ -1,8 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useDrag } from "react-dnd";
-const TaskRow = ({task, idx}) => {
+
+interface Task {
+    _id: string;
+    title: string;
+    description: string;
+    priority: string;
+    deadline: string;
+  }
+interface TaskRowProps {
+    idx: number;
+    task: Task
+  }
+const TaskRow:React.FC<TaskRowProps>= ({task, idx}) => {
     const [{isDragging}, drag] = useDrag(()=>({
         type: "task",
+        item: {id: task?._id},
         collect: (monitor)=> ({
             isDragging: !!monitor.isDragging(),
         })
