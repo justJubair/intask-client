@@ -15,6 +15,8 @@ const Dashboard = () => {
 
         {/* Add a task */}
         <AddTask />
+
+        {/* Task management table */}
       </Container>
     </div>
   );

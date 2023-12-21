@@ -3,15 +3,15 @@ const AddTask = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+   
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: object) => {
     console.log(data);
   };
   return (
     <div className="max-w-2xl mx-auto">
-
+        <h1 className="text-center font-bold text-2xl mb-5 text-fuchsia-600">Add A Task</h1>
     <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
       {/* Title and Deadline */}
       <div className="flex items-center justify-center gap-4">
@@ -19,12 +19,14 @@ const AddTask = () => {
           placeholder="Title"
           className="input input-bordered input-secondary w-full"
           type="text"
-          {...register("title")}
+          required
+          {...register("title", {required:true})}
         />
         <input
           className="input input-bordered input-secondary w-full"
           type="date"
-          {...register("deadline")}
+          required
+          {...register("deadline", {required:true})}
         />
       </div>
       {/* Description and Priority */}
@@ -33,24 +35,24 @@ const AddTask = () => {
           placeholder="Description"
           className="input input-bordered input-secondary w-full"
           type="text"
-          {...register("description")}
+          required
+          {...register("description", {required:true})}
         />
         <select
-          defaultValue="default"
+          defaultValue="low"
+          required
           className="select select-secondary w-full"
-          {...register("priority")}
+          {...register("priority", {required:true})}
         >
-          <option disabled value="default">
-            Priority
-          </option>
-          <option value="female">Low</option>
-          <option value="male">Moderate</option>
-          <option value="other">High</option>
+          
+          <option value="low">Low</option>
+          <option value="moderate">Moderate</option>
+          <option value="high">High</option>
         </select>
       </div>
 
      <div className="flex justify-center">
-     <button className=" btn btn-block bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none" type="submit">Add Task</button>
+     <button className=" btn btn-block bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none" type="submit">Add</button>
      </div>
 
     </form>
