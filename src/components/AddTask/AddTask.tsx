@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 interface TaskFormData {
   // Define the properties of your task data
@@ -14,7 +15,11 @@ interface TaskFormData {
   // Add any other properties as needed
 }
 
-const AddTask = () => {
+interface AddTaskProps {
+  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<unknown, Error>>;
+}
+
+const AddTask:React.FC<AddTaskProps> = ({refetch}) => {
   const {user} = useAuth()
   const {
     register,
@@ -30,6 +35,7 @@ const AddTask = () => {
         if(dbResponse.data.insertedId){
           toast.success("Task has been added")
           reset()
+          refetch()
         }
     }
     catch(error: unknown){

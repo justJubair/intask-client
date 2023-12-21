@@ -1,4 +1,15 @@
-const TaskTable = () => {
+import Loader from "../Shared/Loader";
+
+
+interface TaskTableProps {
+  tasks: [];
+  isLoading: boolean;
+}
+
+const TaskTable: React.FC<TaskTableProps> = ({tasks, isLoading}) => {
+  if(isLoading){
+    return <Loader/>
+  }
   return (
     <div>
       <div className="overflow-x-auto">

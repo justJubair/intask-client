@@ -4,9 +4,16 @@ import AddTask from "../../components/AddTask/AddTask";
 import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
 import TaskTable from "../../components/TaskTable/TaskTable";
+import { useQuery } from "@tanstack/react-query";
+import { getTasks } from "../../api";
 
 const Dashboard = () => {
   const { user, logOut } = useAuth();
+  
+  const {data:tasks, isLoading, refetch} = useQuery({
+    queryKey: [user?.email],
+    queryFn: async()=> await getTasks(user?.email)
+  })
 
   const handleLogout = () => {
     logOut()
@@ -55,10 +62,10 @@ const Dashboard = () => {
         </div>
 
         {/* Add a task */}
-        <AddTask />
+        <AddTask refetch={refetch}/>
 
         {/* Task management table */}
-        <TaskTable/>
+        <TaskTable tasks={tasks} isLoading={isLoading}/>
       </Container>
     </div>
   );
