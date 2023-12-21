@@ -45,11 +45,13 @@ const Login = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none">
+                <button type="submit" className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none">
                   Login
                 </button>
               </div>
             </form>
+            {/* social login */}
+            
           </div>
         </div>
       </div>
