@@ -4,11 +4,12 @@ import Container from "../Shared/Container";
 // import bannerImg from "../../assets/images/banner.jpg"
 const Banner = () => {
     return(
-        <>
-            <div className="min-h-screen bg-center object-cover bg-no-repeat bg-hero-img">
+        <div>
+            <div className="min-h-screen object-cover  bg-hero-img bg-center ">
                 {/* overlay */}
-                <div className="bg-blend-overlay bg-black/75 min-h-screen top-0 left-0"></div>
+                <div className="bg-blend-overlay bg-black/75 h-screen top-0 left-0"></div>
                 {/* text content */}
+            </div>
                 <Container>
 
                 <div className="absolute top-1/4 md:top-1/3 text-white lg:w-1/2 space-y-6">
@@ -16,7 +17,6 @@ const Banner = () => {
                     <Link to="/login" className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none hover:scale-105">Let's Explore</Link>
                 </div>
                 </Container>
-            </div>
-        </>
+        </div>
     )}
 export default Banner;
