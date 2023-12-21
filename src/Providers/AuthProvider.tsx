@@ -17,6 +17,7 @@ interface AuthInfo {
   googleSignIn: () => Promise<UserCredential>;
   githubSignIn: () => Promise<UserCredential>;
   logOut: () => Promise<void>;
+  loading: boolean;
   user: object | null;
 }
 
@@ -30,38 +31,43 @@ const githubProvider = new GithubAuthProvider()
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState({} || null);
+  const [loading, setLoading] = useState(true)
 
   // create new user
   const createUser = (email: string, password: string) => {
+    setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   // login user
   const loginUser = (email: string, password: string) => {
+    setLoading(true)
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   // google login
   const googleSignIn = ()=>{
+    setLoading(true)
     return signInWithPopup(auth, googleProvider)
   } 
 
   // github login
   const githubSignIn = ()=>{
+    setLoading(true)
     return signInWithPopup(auth, githubProvider)
   }
 
   // logout a user
   const logOut = ()=>{
+    setLoading(true)
     return signOut(auth)
   }
 
   // setup an observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("observer", currentUser);
-
       setUser(currentUser);
+      setLoading(false)
     });
 
     return () => {
@@ -76,6 +82,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     googleSignIn,
     githubSignIn,
     logOut,
+    loading,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
