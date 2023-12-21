@@ -8,6 +8,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   UserCredential,
 } from "firebase/auth";
 interface AuthInfo {
@@ -15,6 +16,7 @@ interface AuthInfo {
   loginUser: (email: string, password: string) => Promise<UserCredential>;
   googleSignIn: () => Promise<UserCredential>;
   githubSignIn: () => Promise<UserCredential>;
+  logOut: () => Promise<void>;
   user: object | null;
 }
 
@@ -49,6 +51,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return signInWithPopup(auth, githubProvider)
   }
 
+  // logout a user
+  const logOut = ()=>{
+    return signOut(auth)
+  }
+
   // setup an observer
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -68,6 +75,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     loginUser,
     googleSignIn,
     githubSignIn,
+    logOut,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

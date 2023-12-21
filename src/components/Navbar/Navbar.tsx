@@ -1,7 +1,20 @@
 import { NavLink } from "react-router-dom";
 import Container from "../Shared/Container";
 import { Link } from 'react-scroll';
+import useAuth from "../../hooks/useAuth";
+import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
 const Navbar = () => {
+  const {user,logOut} = useAuth()
+
+  const handleLogout =()=>{
+    logOut()
+    .then()
+    .catch(
+      (error: { message: Renderable | ValueFunction<Renderable, Toast> }) => {
+        toast.error(error.message);
+      }
+    );
+  }
   const navLinks = (
     <>
       <li className="duration-100 hover:border-b border-violet-600">
@@ -99,12 +112,26 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="navbar-end">
-            <NavLink
+            {
+              user ? <div className="dropdown dropdown-end">
+              <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img alt="User" src={user?.photoURL} />
+                </div>
+              </div>
+              <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                
+                <li><a>{user?.displayName}</a></li>
+                <li onClick={handleLogout}><a>Logout</a></li>
+              </ul>
+            </div> :  <NavLink
               to="/login"
               className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
             >
               Login
             </NavLink>
+            }
+           
           </div>
         </div>
       </Container>
