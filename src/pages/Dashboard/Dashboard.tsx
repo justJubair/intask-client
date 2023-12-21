@@ -3,6 +3,7 @@ import Container from "../../components/Shared/Container";
 import AddTask from "../../components/AddTask/AddTask";
 import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import TaskTable from "../../components/TaskTable/TaskTable";
 
 const Dashboard = () => {
   const { user, logOut } = useAuth();
@@ -57,6 +58,7 @@ const Dashboard = () => {
         <AddTask />
 
         {/* Task management table */}
+        <TaskTable/>
       </Container>
     </div>
   );
