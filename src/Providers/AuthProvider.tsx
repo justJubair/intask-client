@@ -1,19 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createContext } from "react";
-
+import auth from "../firebase/firebase.config.tsx";
+import {
+  createUserWithEmailAndPassword,
+  UserCredential,
+} from "firebase/auth";
 interface AuthInfo {
-    name: string
+  createUser: (email: string, password: string) => Promise<UserCredential>;
 }
 
-export const AuthContext = createContext<AuthInfo | null>(null)
-const AuthProvider = ({children}: {children:React.ReactNode}) => {
+export const AuthContext = createContext<AuthInfo | null>(null);
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // create new user
+  const createUser = (email: string, password: string) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
 
+ 
+
+  const authInfo: AuthInfo = {
+    createUser,
     
-    const authInfo:AuthInfo = {
-        name: "joey"
-    }
-    return(
-        <AuthContext.Provider value={authInfo}>
-            {children}
-        </AuthContext.Provider>
-    )}
+  };
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
+};
 export default AuthProvider;

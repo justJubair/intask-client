@@ -53,6 +53,11 @@ const Login = () => {
             </form>
             {/* social login */}
             <SocialLogin/>
+            {/* new to in task */}
+            <div className="flex items-center justify-between px-6 mb-4">
+              <p className="font-bold text-violet-700">New to inTask?</p>
+              <Link to="/register" className="btn btn-link text-base">Register</Link>
+            </div>
           </div>
         </div>
       </div>
