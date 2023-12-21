@@ -6,6 +6,8 @@ import useAuth from "../../hooks/useAuth";
 import TaskTable from "../../components/TaskTable/TaskTable";
 import { useQuery } from "@tanstack/react-query";
 import { getTasks } from "../../api";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const Dashboard = () => {
   const { user, logOut } = useAuth();
@@ -65,7 +67,9 @@ const Dashboard = () => {
         <AddTask refetch={refetch}/>
 
         {/* Task management table */}
+        <DndProvider backend={HTML5Backend}>
         <TaskTable tasks={tasks} isLoading={isLoading}/>
+          </DndProvider>
       </Container>
     </div>
   );
