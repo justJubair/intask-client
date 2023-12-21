@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 const AddTask = () => {
   const {
     register,
@@ -6,8 +8,20 @@ const AddTask = () => {
    
   } = useForm();
 
-  const onSubmit = (data: object) => {
-    console.log(data);
+  const onSubmit = async(data: object) => {
+    
+    try{
+        const dbResponse = await axios.post("http://localhost:5000/tasks", data)
+        if(dbResponse.data.insertedId){
+          toast.success("Task has been added")
+        }
+    }
+    catch(error: unknown){
+     if(error instanceof Error){
+
+       toast.error(error.message)
+     }
+    }
   };
   return (
     <div className="max-w-2xl mx-auto">
