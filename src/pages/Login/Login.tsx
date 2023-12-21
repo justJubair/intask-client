@@ -1,7 +1,33 @@
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "../../components/Shared/SocialLogin";
+import useAuth from "../../hooks/useAuth";
+import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
 
 const Login = () => {
+  const {loginUser} = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogin = (e: { preventDefault: () => void; target: any })=>{
+    e.preventDefault()
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    
+    loginUser(email, password)
+    .then(()=>{
+      toast.success("Logged in")
+      navigate("/dashboard")
+    })
+    .catch(
+      (error: { message: Renderable | ValueFunction<Renderable, Toast> }) => {
+        toast.error(error.message);
+      }
+    );
+    
+    
+  }
+
   return (
     <>
       <Link
@@ -17,12 +43,13 @@ const Login = () => {
           </h1>
 
           <div className=" max-w-md rounded-lg w-full shadow-2xl bg-base-100">
-            <form className="card-body">
+            <form onSubmit={handleLogin} className="card-body">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Email</span>
                 </label>
                 <input
+                  name="email"
                   type="email"
                   placeholder="email"
                   className="input input-bordered"
@@ -34,6 +61,7 @@ const Login = () => {
                   <span className="label-text">Password</span>
                 </label>
                 <input
+                  name="password"
                   type="password"
                   placeholder="password"
                   className="input input-bordered"

@@ -1,30 +1,53 @@
-import { Link } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "../../components/Shared/SocialLogin";
 import toast, { Renderable, Toast, ValueFunction } from "react-hot-toast";
 import useAuth from "../../hooks/useAuth";
+import { updateProfile } from "firebase/auth";
+import auth from "../../firebase/firebase.config";
 
 const Register = () => {
-    const {createUser} = useAuth()
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleRegister = (e: { preventDefault: () => void; target: any; })=>{
-        e.preventDefault()
-        const form = e.target;
-        const name = form.name.value;
-        const photo = form.photo.value;
-        const email = form.email.value;
-        const password = form.password.value;
-        createUser(email, password)
-    
-        .then((result: { user: object; })=>{
-            if(result?.user){
-              toast.success("User created")
-            }
-        })
-        .catch((error: { message: Renderable | ValueFunction<Renderable, Toast>; })=>{
-          toast.error(error.message)
-        })
-        
-    }
+  const navigate = useNavigate()
+  const { createUser } = useAuth();
+
+  const handleRegister = (e: { preventDefault: () => void; target: any }) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const photo = form.photo.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    createUser(email, password)
+      .then((result: { user: object }) => {
+        if (result?.user) {
+          console.log(result.user)
+          const currentUser = auth.currentUser;
+          if (currentUser) {
+            updateProfile(currentUser, {
+              displayName: name,
+              photoURL: photo,
+            })
+              .then(() => {
+                toast.success("User created");
+                form.reset()
+                navigate("/dashboard")
+              })
+              .catch(
+                (error: {
+                  message: Renderable | ValueFunction<Renderable, Toast>;
+                }) => {
+                  toast.error(error.message);
+                }
+              );
+          }
+        }
+      })
+      .catch(
+        (error: { message: Renderable | ValueFunction<Renderable, Toast> }) => {
+          toast.error(error.message);
+        }
+      );
+  };
   return (
     <>
       <Link
@@ -95,17 +118,24 @@ const Register = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button type="submit" className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none">
-                  Login
+                <button
+                  type="submit"
+                  className="btn bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white border-none"
+                >
+                  Register
                 </button>
               </div>
             </form>
             {/* social login */}
-            <SocialLogin/>
+            <SocialLogin />
             {/* new to in task */}
             <div className="flex items-center justify-between px-6 mb-4">
-              <p className="font-bold text-violet-700">Already have an account?</p>
-              <Link to="/login" className="btn btn-link text-base">Login</Link>
+              <p className="font-bold text-violet-700">
+                Already have an account?
+              </p>
+              <Link to="/login" className="btn btn-link text-base">
+                Login
+              </Link>
             </div>
           </div>
         </div>
