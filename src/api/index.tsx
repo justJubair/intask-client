@@ -5,7 +5,7 @@ import axios from "axios"
 // GET; user based task
 export const getTasks = async(email:string)=>{
     try{
-        const res  = await axios(`http://localhost:5000/tasks?userEmail=${email}`)
+        const res  = await axios(`https://intask-server.vercel.app/tasks?userEmail=${email}`)
         return res.data 
     }
     catch(err){

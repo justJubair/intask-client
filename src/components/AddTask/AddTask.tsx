@@ -31,7 +31,7 @@ const AddTask:React.FC<AddTaskProps> = ({refetch}) => {
     data.userEmail = user?.email
     
     try{
-        const dbResponse = await axios.post("http://localhost:5000/tasks", data)
+        const dbResponse = await axios.post("https://intask-server.vercel.app/tasks", data)
         if(dbResponse.data.insertedId){
           toast.success("Task has been added")
           reset()

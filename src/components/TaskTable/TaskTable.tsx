@@ -23,14 +23,14 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
   const {data:onGoingTasks, isLoading:onGoingTasksLoading, refetch:onTaskRefetch}= useQuery({
     queryKey: [user, "onGoingTasks"],
     queryFn: async()=>{
-      const res = await axios(`http://localhost:5000/onGoingTasks?userEmail=${user?.email}`)
+      const res = await axios(`https://intask-server.vercel.app/onGoingTasks?userEmail=${user?.email}`)
       return res.data
     }
   })
   const {data:completeTasks, isLoading:completeTasksLoading, refetch:completeRefetch}= useQuery({
     queryKey: [user, "completeTasks"],
     queryFn: async()=>{
-      const res = await axios(`http://localhost:5000/completeTasks?userEmail=${user?.email}`)
+      const res = await axios(`https://intask-server.vercel.app/completeTasks?userEmail=${user?.email}`)
       return res.data
     }
   })
@@ -43,7 +43,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
 
   const [, drop] = useDrop(() => ({
     accept: "task",
-    drop: (item) => shiftToOnGoing(item),
+    drop: (item:{toDo:string, id:string}) => shiftToOnGoing(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -52,14 +52,14 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
 
   const [, dropComplete] = useDrop(() => ({
     accept: "task",
-    drop: (item) => shiftToComplete(item),
+    drop: (item:{toDo:string, id:string}) => shiftToComplete(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
   const [, dropTodo] = useDrop(() => ({
     accept: "task",
-    drop: (item) => shiftToDo(item),
+    drop: (item:{onGoing:string, id:string}) => shiftToDo(item),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -67,42 +67,42 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
 
  
 
-  const shiftToOnGoing = async (item) => {
+  const shiftToOnGoing = async (item:{toDo:string, id:string}) => {
    
     try {
       if(item?.toDo){
 
         const resTodo = await axios(
-          `http://localhost:5000/tasks?userEmail=${user?.email}`
+          `https://intask-server.vercel.app/tasks?userEmail=${user?.email}`
         );
         const selected = resTodo?.data?.find(
           (task: { _id: string }) => task?._id === item.id
         );
           delete selected._id
-        const postRes = await axios.post("http://localhost:5000/onGoingTasks", selected)
+        const postRes = await axios.post("https://intask-server.vercel.app/onGoingTasks", selected)
         if(postRes?.data?.insertedId){
           onTaskRefetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/tasks/${item.id}`)
+           const deleteRes = await axios.delete(`https://intask-server.vercel.app/tasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
               refetch()
            }
         }
       } else {
         const resComplete = await axios(
-          `http://localhost:5000/completeTasks?userEmail=${user?.email}`
+          `https://intask-server.vercel.app/completeTasks?userEmail=${user?.email}`
         );
         const selected = resComplete?.data?.find(
           (task: { _id: string }) => task?._id === item.id
         );
           delete selected._id
-        const postRes = await axios.post("http://localhost:5000/onGoingTasks", selected)
+        const postRes = await axios.post("https://intask-server.vercel.app/onGoingTasks", selected)
         if(postRes?.data?.insertedId){
           onTaskRefetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/completeTasks/${item.id}`)
+           const deleteRes = await axios.delete(`https://intask-server.vercel.app/completeTasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
             completeRefetch()
            }
@@ -117,42 +117,42 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
   };
 
 
-  const shiftToComplete = async (item) => {
+  const shiftToComplete = async (item:{toDo:string, id:string}) => {
   
     try {
       if(item?.toDo){
 
         const resTodo = await axios(
-          `http://localhost:5000/tasks?userEmail=${user?.email}`
+          `https://intask-server.vercel.app/tasks?userEmail=${user?.email}`
         );
         const selected = resTodo?.data?.find(
           (task: { _id: string }) => task?._id === item.id
         );
           delete selected._id
-        const postRes = await axios.post("http://localhost:5000/completeTasks", selected)
+        const postRes = await axios.post("https://intask-server.vercel.app/completeTasks", selected)
         if(postRes?.data?.insertedId){
           completeRefetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/tasks/${item.id}`)
+           const deleteRes = await axios.delete(`https://intask-server.vercel.app/tasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
               refetch()
            }
         }
-      } else if(item?.onGoing) {
+      } else {
         const resComplete = await axios(
-          `http://localhost:5000/onGoingTasks?userEmail=${user?.email}`
+          `https://intask-server.vercel.app/onGoingTasks?userEmail=${user?.email}`
         );
         const selected = resComplete?.data?.find(
           (task: { _id: string }) => task?._id === item.id
         );
           delete selected._id
-        const postRes = await axios.post("http://localhost:5000/completeTasks", selected)
+        const postRes = await axios.post("https://intask-server.vercel.app/completeTasks", selected)
         if(postRes?.data?.insertedId){
           completeRefetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/onGoingtasks/${item.id}`)
+           const deleteRes = await axios.delete(`https://intask-server.vercel.app/onGoingtasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
             onTaskRefetch()
            }
@@ -167,42 +167,42 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
   };
 
   // shift to TODO
-  const shiftToDo = async (item) => {
+  const shiftToDo = async (item:{onGoing:string, id:string}) => {
   
     try {
       if(item?.onGoing){
 
         const resTodo = await axios(
-          `http://localhost:5000/onGoingTasks?userEmail=${user?.email}`
+          `https://intask-server.vercel.app/onGoingTasks?userEmail=${user?.email}`
         );
         const selected = resTodo?.data?.find(
           (task: { _id: string }) => task?._id === item.id
         );
           delete selected._id
-        const postRes = await axios.post("http://localhost:5000/tasks", selected)
+        const postRes = await axios.post("https://intask-server.vercel.app/tasks", selected)
         if(postRes?.data?.insertedId){
          refetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/onGoingtasks/${item.id}`)
+           const deleteRes = await axios.delete(`https://intask-server.vercel.app/onGoingtasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
               refetch()
            }
         }
       } else {
         const resComplete = await axios(
-          `http://localhost:5000/completeTasks?userEmail=${user?.email}`
+          `https://intask-server.vercel.app/completeTasks?userEmail=${user?.email}`
         );
         const selected = resComplete?.data?.find(
           (task: { _id: string }) => task?._id === item.id
         );
           delete selected._id
-        const postRes = await axios.post("http://localhost:5000/tasks", selected)
+        const postRes = await axios.post("https://intask-server.vercel.app/tasks", selected)
         if(postRes?.data?.insertedId){
           refetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/completeTasks/${item.id}`)
+           const deleteRes = await axios.delete(`https://intask-server.vercel.app/completeTasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
             completeRefetch()
            }
