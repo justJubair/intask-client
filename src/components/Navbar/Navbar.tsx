@@ -46,7 +46,7 @@ const Navbar = () => {
         to="ourUsers"
         spy={true} 
         smooth={true} 
-        offset={-20} 
+        offset={-30} 
         duration={500} 
         >
            <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">Our Users</li>
