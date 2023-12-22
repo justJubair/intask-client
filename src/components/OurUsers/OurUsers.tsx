@@ -43,11 +43,8 @@ const OurUsers = () => {
           modules={[EffectCards, Autoplay]}
           className="mySwiper"
         >
-          {/* <SwiperSlide>Hello</SwiperSlide>
-          <SwiperSlide>Hello</SwiperSlide>
-          <SwiperSlide>Hello</SwiperSlide>
-          <SwiperSlide>Hello</SwiperSlide> */}
-           {users?.map((testimonial) => (
+         
+           {users?.map((testimonial:{_id: string, img_url:string, name:string, role:string, company_name:string, testimonial:string}) => (
             <SwiperSlide key={testimonial._id}>
               <div className="flex flex-col items-center justify-center">
                 <img

@@ -1,14 +1,14 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-// import { DndProvider } from "react-dnd";
-// import { HTML5Backend } from "react-dnd-html5-backend";
+import Footer from "../components/Footer/Footer";
+
 const Root = () => {
   return (
     <div>
-      {/* <DndProvider backend={HTML5Backend}> */}
+     
         <Navbar />
         <Outlet />
-      {/* </DndProvider> */}
+        <Footer/>
     </div>
   );
 };
