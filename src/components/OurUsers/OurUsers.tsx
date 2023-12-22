@@ -18,7 +18,7 @@ const OurUsers = () => {
     },[])
 
   return (
-    <div className="my-20" id="ourUsers">
+    <div className="mt-20 mb-28" id="ourUsers">
         <Container>
 
       {/* main container */}

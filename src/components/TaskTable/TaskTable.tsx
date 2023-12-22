@@ -35,7 +35,6 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
     }
   })
 
-  console.log(completeTasks)
 
 
 
@@ -186,7 +185,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
               // delete the task from main list
            const deleteRes = await axios.delete(`https://intask-server.vercel.app/onGoingtasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
-              refetch()
+            onTaskRefetch()
            }
         }
       } else {

@@ -11,11 +11,15 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 const Dashboard = () => {
   const { user, logOut } = useAuth();
-  
-  const {data:tasks, isLoading, refetch} = useQuery({
+
+  const {
+    data: tasks,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: [user],
-    queryFn: async()=> await getTasks(user?.email)
-  })
+    queryFn: async () => await getTasks(user?.email),
+  });
 
   const handleLogout = () => {
     logOut()
@@ -64,12 +68,12 @@ const Dashboard = () => {
         </div>
 
         {/* Add a task */}
-        <AddTask refetch={refetch}/>
+        <AddTask refetch={refetch} />
 
         {/* Task management table */}
         <DndProvider backend={HTML5Backend}>
-        <TaskTable tasks={tasks} isLoading={isLoading} refetch={refetch}/>
-          </DndProvider>
+          <TaskTable tasks={tasks} isLoading={isLoading} refetch={refetch} />
+        </DndProvider>
       </Container>
     </div>
   );

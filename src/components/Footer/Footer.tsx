@@ -1,6 +1,6 @@
 const Footer = () => {
     return(
-        <footer className="footer p-10 bg-violet-300 text-violet-900">
+        <footer className=" footer p-10 bg-violet-300 text-violet-900">
   <aside>
    <h2 className="font-bold text-xl bg-violet-900 text-white px-3 py-1 rounded">inTask</h2>
     <p>inTask Ltd.<br/>Providing management tools since 2023</p>
