@@ -6,7 +6,7 @@ const Banner = () => {
     const {user} = useAuth()
     return(
         <div>
-            <div className="min-h-screen object-cover  bg-hero-img bg-center ">
+            <div className="min-h-screen object-cover  bg-[url('https://raw.githubusercontent.com/justJubair/intask-client/main/src/assets/images/banner.jpg')] bg-center ">
                 {/* overlay */}
                 <div className="bg-blend-overlay bg-black/75 h-screen top-0 left-0"></div>
                 {/* text content */}

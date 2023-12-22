@@ -24,9 +24,9 @@ const OnGoinTaskRow:React.FC<onGoingTaskRow>= ({task, idx}) => {
     return(
         <tr ref={drag} style={{border: isDragging ? "5px solid pink" : "0px"}}>
         <th>{idx+1}</th>
-        <td>{task?.title}</td>
+        <td className="font-medium">{task?.title}</td>
         <td>{task?.description}</td>
-        <td>{task?.priority}</td>
+        <td className={task?.priority==="low" ? "text-green-600" : task?.priority==="high" ? "text-red-600" : "text-yellow-600"}>{task?.priority}</td>
         <td>{task?.deadline}</td>
       </tr>
     )}

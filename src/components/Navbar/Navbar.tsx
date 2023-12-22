@@ -41,19 +41,18 @@ const Navbar = () => {
           Dashboard
         </NavLink>
       </li>
-      <li className="duration-100 hover:border-b border-violet-600">
-        <NavLink
-          to="/ourUsers"
-          className={({ isActive }) =>
-            isActive
-              ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white px-3 py-1 rounded-md"
-              : "px-3 py-1"
-          }
+      <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">
+      <Link
+        to="ourUsers"
+        spy={true} 
+        smooth={true} 
+        offset={50} 
+        duration={500} 
         >
           Our Users
-        </NavLink>
+        </Link>
       </li>
-      <li className="duration-100 hover:border-b border-violet-600 cursor-pointer">
+      <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">
         <Link
         to="about"
         spy={true} 

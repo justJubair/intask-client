@@ -6,9 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "hero-img": "url('./src/assets/images/banner.jpg')"
-      }
     },
   },
   plugins: [require("daisyui")],
