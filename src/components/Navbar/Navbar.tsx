@@ -41,18 +41,19 @@ const Navbar = () => {
           Dashboard
         </NavLink>
       </li>
-      <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">
+     
       <Link
         to="ourUsers"
         spy={true} 
         smooth={true} 
-        offset={50} 
+        offset={-20} 
         duration={500} 
         >
-          Our Users
+           <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">Our Users</li>
+          
         </Link>
-      </li>
-      <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">
+     
+      
         <Link
         to="about"
         spy={true} 
@@ -60,9 +61,10 @@ const Navbar = () => {
         offset={50} 
         duration={500} 
         >
-          About
+           <li className="duration-100 hover:border-b border-violet-600 cursor-pointer px-3">About</li>
+          
         </Link>
-      </li>
+      
     </>
   );
   return (
