@@ -1,9 +1,11 @@
 import axios from "axios";
 import Loader from "../Shared/Loader";
-import TaskRow from "./TaskRow";
+import ToDoTaskRow from "./ToDoTaskRow";
 import { useDrop } from "react-dnd";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import OnGoinTaskRow from "./OnGoingTaskRow";
+import CompleteTaskRow from "./CompleteTaskRow";
 
 interface TaskTableProps {
   tasks: [];
@@ -37,6 +39,13 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
+  // const [, dropTodo] = useDrop(() => ({
+  //   accept: "task",
+  //   drop: (item: { id: string }) => shiftToTodo(item.id, tasks),
+  //   collect: (monitor) => ({
+  //     isOver: !!monitor.isOver(),
+  //   }),
+  // }));
 
 
   const shiftToOnGoing = async (id: string) => {
@@ -67,13 +76,29 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading }) => {
       console.log(err);
     }
   };
+  // const shiftToTodo = async (id: string, tasks: Task[]) => {
+  //   try {
+  //     const res = await axios(
+  //       `http://localhost:5000/tasks?userEmail=${user?.email}`
+  //     );
+  //     const selected = res?.data?.find(
+  //       (task: { _id: string }) => task?._id === id
+  //     );
+  //     console.log(tasks)
+      
+   
+        
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   if (isLoading) {
     return <Loader />;
   }
   return (
     <div className="space-y-10">
-      <div className="overflow-x-auto mt-16">
+      <div className="overflow-x-auto mt-16" >
         <h1 className="text-center  font-bold text-2xl">To Do</h1>
         <table className="table table-zebra">
           {/* head */}
@@ -98,7 +123,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading }) => {
                 },
                 idx
               ) => (
-                <TaskRow key={task._id} task={task} idx={idx} />
+                <ToDoTaskRow key={task._id} task={task} idx={idx} />
               )
             )}
           </tbody>
@@ -121,13 +146,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading }) => {
           <tbody>
        
             {
-              onGoingTasks?.map((task:{_id:string, title: string, description: string, priority: string, deadline:string}, idx)=>  <tr key={task?._id}>
-                <th>{idx+1}</th>
-                <td>{task?.title}</td>
-                <td>{task?.description}</td>
-                <td>{task?.priority}</td>
-                <td>{task?.deadline}</td>
-              </tr>)
+              onGoingTasks?.map((task:{_id:string, title: string, description: string, priority: string, deadline:string}, idx)=>  <OnGoinTaskRow key={task?._id} task={task} idx={idx}/>)
             }
           </tbody>
         </table>
@@ -158,13 +177,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading }) => {
                 },
                 idx
               ) => (
-                <tr key={task?._id}>
-                  <th>{idx + 1}</th>
-                  <td>{task?.title}</td>
-                  <td>{task?.description}</td>
-                  <td>{task?.priority}</td>
-                  <td>{task?.deadline}</td>
-                </tr>
+               <CompleteTaskRow key={task?._id} task={task} idx={idx}/>
               )
             )}
 
