@@ -68,7 +68,7 @@ const Dashboard = () => {
 
         {/* Task management table */}
         <DndProvider backend={HTML5Backend}>
-        <TaskTable tasks={tasks} isLoading={isLoading}/>
+        <TaskTable tasks={tasks} isLoading={isLoading} refetch={refetch}/>
           </DndProvider>
       </Container>
     </div>

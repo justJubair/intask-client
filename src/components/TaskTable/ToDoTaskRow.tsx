@@ -15,7 +15,7 @@ interface TaskRowProps {
 const TaskRow:React.FC<TaskRowProps>= ({task, idx}) => {
     const [{isDragging}, drag] = useDrag(()=>({
         type: "task",
-        item: {id: task?._id},
+        item: {id: task?._id, toDo: "toDo"},
         collect: (monitor)=> ({
             isDragging: !!monitor.isDragging(),
         })

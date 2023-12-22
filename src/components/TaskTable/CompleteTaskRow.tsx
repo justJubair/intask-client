@@ -15,7 +15,7 @@ interface CompleteTaskRow {
 const CompleteTaskRow:React.FC<CompleteTaskRow>= ({task, idx}) => {
     const [{isDragging}, drag] = useDrag(()=>({
         type: "task",
-        item: {id: task?._id},
+        item: {id: task?._id, complete: "complete"},
         collect: (monitor)=> ({
             isDragging: !!monitor.isDragging(),
         })

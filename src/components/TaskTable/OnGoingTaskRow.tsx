@@ -15,7 +15,7 @@ interface onGoingTaskRow {
 const OnGoinTaskRow:React.FC<onGoingTaskRow>= ({task, idx}) => {
     const [{isDragging}, drag] = useDrag(()=>({
         type: "task",
-        item: {id: task?._id},
+        item: {id: task?._id, onGoing: "onGoing"},
         collect: (monitor)=> ({
             isDragging: !!monitor.isDragging(),
         })
