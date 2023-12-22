@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { user, logOut } = useAuth();
   
   const {data:tasks, isLoading, refetch} = useQuery({
-    queryKey: [user?.email],
+    queryKey: [user],
     queryFn: async()=> await getTasks(user?.email)
   })
 

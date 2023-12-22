@@ -15,17 +15,9 @@ interface TaskTableProps {
   refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<unknown, Error>>;
 }
 
-// interface Task {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   priority: string;
-//   deadline: string;
-// }
 
 const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
-  // const [onGoingTasks, setOnGoingTasks] = useState<Task[]>([])
-  // const [completeTasks, setCompleteTasks] = useState<Task[]>([])
+
   const { user } = useAuth();
 
   const {data:onGoingTasks, isLoading:onGoingTasksLoading, refetch:onTaskRefetch}= useQuery({
@@ -65,10 +57,17 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
+  const [, dropTodo] = useDrop(() => ({
+    accept: "task",
+    drop: (item) => shiftToDo(item),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
 
  
 
-  const shiftToOnGoing = async (item:{toDo:string | null, id: string}) => {
+  const shiftToOnGoing = async (item) => {
    
     try {
       if(item?.toDo){
@@ -167,13 +166,64 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
     }
   };
 
+  // shift to TODO
+  const shiftToDo = async (item) => {
+  
+    try {
+      if(item?.onGoing){
+
+        const resTodo = await axios(
+          `http://localhost:5000/onGoingTasks?userEmail=${user?.email}`
+        );
+        const selected = resTodo?.data?.find(
+          (task: { _id: string }) => task?._id === item.id
+        );
+          delete selected._id
+        const postRes = await axios.post("http://localhost:5000/tasks", selected)
+        if(postRes?.data?.insertedId){
+         refetch()
+         
+              // delete the task from main list
+           const deleteRes = await axios.delete(`http://localhost:5000/onGoingtasks/${item.id}`)
+           if(deleteRes.data.deletedCount> 0){
+              refetch()
+           }
+        }
+      } else {
+        const resComplete = await axios(
+          `http://localhost:5000/completeTasks?userEmail=${user?.email}`
+        );
+        const selected = resComplete?.data?.find(
+          (task: { _id: string }) => task?._id === item.id
+        );
+          delete selected._id
+        const postRes = await axios.post("http://localhost:5000/tasks", selected)
+        if(postRes?.data?.insertedId){
+          refetch()
+         
+              // delete the task from main list
+           const deleteRes = await axios.delete(`http://localhost:5000/completeTasks/${item.id}`)
+           if(deleteRes.data.deletedCount> 0){
+            completeRefetch()
+           }
+        }
+      }
+      
+  
+        
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   if (isLoading || onGoingTasksLoading || completeTasksLoading) {
     return <Loader />;
   }
   return (
     <div className="space-y-10">
-      <div className="overflow-x-auto mt-16" >
+      <div className="overflow-x-auto mt-16" ref={dropTodo}
+      >
         <h1 className="text-center  font-bold text-2xl">To Do</h1>
         <table className="table table-zebra">
           {/* head */}
