@@ -3,10 +3,11 @@ import Loader from "../Shared/Loader";
 import ToDoTaskRow from "./ToDoTaskRow";
 import { useDrop } from "react-dnd";
 import useAuth from "../../hooks/useAuth";
-import { useState } from "react";
+
 import OnGoinTaskRow from "./OnGoingTaskRow";
-import CompleteTaskRow from "./CompleteTaskRow";
+
 import { QueryObserverResult, RefetchOptions, useQuery } from "@tanstack/react-query";
+import CompleteTaskRow from "./CompleteTaskRow";
 
 interface TaskTableProps {
   tasks: [];
@@ -28,12 +29,21 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
   const { user } = useAuth();
 
   const {data:onGoingTasks, isLoading:onGoingTasksLoading, refetch:onTaskRefetch}= useQuery({
-    queryKey: [user],
+    queryKey: [user, "onGoingTasks"],
     queryFn: async()=>{
       const res = await axios(`http://localhost:5000/onGoingTasks?userEmail=${user?.email}`)
       return res.data
     }
   })
+  const {data:completeTasks, isLoading:completeTasksLoading, refetch:completeRefetch}= useQuery({
+    queryKey: [user, "completeTasks"],
+    queryFn: async()=>{
+      const res = await axios(`http://localhost:5000/completeTasks?userEmail=${user?.email}`)
+      return res.data
+    }
+  })
+
+  console.log(completeTasks)
 
 
 
@@ -72,7 +82,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
           delete selected._id
         const postRes = await axios.post("http://localhost:5000/onGoingTasks", selected)
         if(postRes?.data?.insertedId){
-  
+          onTaskRefetch()
          
               // delete the task from main list
            const deleteRes = await axios.delete(`http://localhost:5000/tasks/${item.id}`)
@@ -82,7 +92,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
         }
       } else {
         const resComplete = await axios(
-          `http://localhost:5000/onGoingTasks?userEmail=${user?.email}`
+          `http://localhost:5000/completeTasks?userEmail=${user?.email}`
         );
         const selected = resComplete?.data?.find(
           (task: { _id: string }) => task?._id === item.id
@@ -90,12 +100,12 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
           delete selected._id
         const postRes = await axios.post("http://localhost:5000/onGoingTasks", selected)
         if(postRes?.data?.insertedId){
-  
+          onTaskRefetch()
          
               // delete the task from main list
-           const deleteRes = await axios.delete(`http://localhost:5000/onGoingtasks/${item.id}`)
+           const deleteRes = await axios.delete(`http://localhost:5000/completeTasks/${item.id}`)
            if(deleteRes.data.deletedCount> 0){
-              refetch()
+            completeRefetch()
            }
         }
       }
@@ -122,7 +132,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
           delete selected._id
         const postRes = await axios.post("http://localhost:5000/completeTasks", selected)
         if(postRes?.data?.insertedId){
-  
+          completeRefetch()
          
               // delete the task from main list
            const deleteRes = await axios.delete(`http://localhost:5000/tasks/${item.id}`)
@@ -140,7 +150,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
           delete selected._id
         const postRes = await axios.post("http://localhost:5000/completeTasks", selected)
         if(postRes?.data?.insertedId){
-  
+          completeRefetch()
          
               // delete the task from main list
            const deleteRes = await axios.delete(`http://localhost:5000/onGoingtasks/${item.id}`)
@@ -158,7 +168,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
   };
 
 
-  if (isLoading || onGoingTasksLoading) {
+  if (isLoading || onGoingTasksLoading || completeTasksLoading) {
     return <Loader />;
   }
   return (
@@ -231,7 +241,7 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
             </tr>
           </thead>
           <tbody>
-            {/* {completeTasks?.map(
+            {completeTasks?.map(
               (
                 task: {
                   _id: string;
@@ -240,12 +250,12 @@ const TaskTable: React.FC<TaskTableProps> = ({ tasks, isLoading, refetch }) => {
                   priority: string;
                   deadline: string;
                 },
-                idx
+                idx:number
               ) => (
                <CompleteTaskRow key={task?._id} task={task} idx={idx}/>
               )
             )}
- */}
+
 
           </tbody>
         </table>
